@@ -9,6 +9,10 @@ namespace DAL
     public interface IDBConnection
     {
         /// <summary>
+        /// Property to hold the connection string for the class which implement this interface.
+        /// </summary>
+        string ConnectionString { get; set; }
+        /// <summary>
         /// Execute a SQL insert, update, delete command to a database. 
         /// </summary>
         /// <param name="command">The SQL Command to execute</param>

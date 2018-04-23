@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public enum ParameterType { IN, OUT, IN_OUT }
+    public enum ParameterType { IN, OUT }
+    public enum TypeOfValue { LONG, INTEGER, DECIMAL, BOOLEAN, CHAR, STRING, TEXT, DATE, DATETIME }
     public class DBParameter
     {
         string name;
-        string typeOfValue;
+        TypeOfValue typeOfValue;
         object value;
         ParameterType sqlType;
 
@@ -27,7 +28,7 @@ namespace DAL
             }
         }
 
-        public string TypeOfValue
+        public TypeOfValue TypeOfValue
         {
             get
             {
@@ -66,7 +67,7 @@ namespace DAL
             }
         }
 
-        public DBParameter(string name, string typeOfValue, object value, ParameterType sqlType = ParameterType.IN) {
+        public DBParameter(string name, TypeOfValue typeOfValue, object value, ParameterType sqlType = ParameterType.IN) {
             this.name = name;
             this.typeOfValue = typeOfValue;
             this.value = value;
