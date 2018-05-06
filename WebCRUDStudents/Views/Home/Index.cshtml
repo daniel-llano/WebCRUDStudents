@@ -1,31 +1,520 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Students Admin Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<h2>Students Administration Page</h2>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<form class="form-horizontal">
+    <div id="alertPanel">
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-primary">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseFilters">
+                <h4 class="panel-title"><span id="iconTitleFilter" class="glyphicon glyphicon-filter"></span>&nbsp;Filter Students</h4>
+            </div>
+            <div id="collapseFilters" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="StartDate">Filter by Dates, from:</label>
+                            <div class="col-md-4">
+                                <div class="input-group date" id="StartDate" style="width: 150px;">
+                                    <input type="text" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <label class="col-md-2 control-label" for="EndDate">to: </label>
+                            <div class="col-md-4">
+                                <div class="input-group date" id="EndDate" style="width: 150px;">
+                                    <input type="text" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="Name">Name: </label>
+                            <div class="col-sm-4">
+                                <input class="form-control" id="Name" name="Name" type="text" placeholder="Name" maxlength="500" />
+                            </div>
+
+                            <div class="checkbox control-label col-md-offset-2 col-md-4">
+                                <label class="control-label"><input id="IsNotEnabled" type="checkbox" />Show Hidden Students<span></span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="Type">Student Type: </label>
+                            <div class="col-md-4">
+                                <select id="Type" name="Type" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="Kinder">Kinder</option>
+                                    <option value="Elementary">Elementary</option>
+                                    <option value="High">High</option>
+                                    <option value="University">University</option>
+                                </select>
+                            </div>
+
+                            <label class="col-md-2 control-label" for="Gender">Gender: </label>
+                            <div class="col-md-4">
+                                <select id="Gender" name="Gender" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="M">Masculine</option>
+                                    <option value="F">Feminine</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="panel-footer">
+                    <button id="btnSearch" name="btnSearch" class="btn btn-primary" data-submit="true" type="button"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</button>&nbsp;&nbsp;
+                    <button id="btnReset" name="btnReset" class="btn btn-warning" type="button"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Reset</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel panel-success">
+            <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#studentForm">
+                <h4 class="panel-title">
+                    <span id="iconTitleForm" class="glyphicon glyphicon-plus"></span>&nbsp;<span id="lblTitleForm">Add New</span> Student
+                </h4>
+            </div>
+            <div id="studentForm" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="txtName">Name: </label>
+                            <div class="col-sm-4">
+                                <input class="form-control" id="txtName" name="txtName" type="text" placeholder="Name" maxlength="500" />
+                            </div>
+
+                            <div id="divChkEnabled" class="checkbox control-label col-md-offset-2 col-md-4 hidden">
+                                <label class="control-label"><input id="chkIsNotEnabled" type="checkbox" />Student hidden.<span></span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="selType">Student Type: </label>
+                            <div class="col-md-4">
+                                <select id="selType" name="selType" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="Kinder">Kinder</option>
+                                    <option value="Elementary">Elementary</option>
+                                    <option value="High">High</option>
+                                    <option value="University">University</option>
+                                </select>
+                            </div>
+
+                            <label class="col-md-2 control-label" for="selGender">Gender: </label>
+                            <div class="col-md-4">
+                                <select id="selGender" name="selGender" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="Masculine">Masculine</option>
+                                    <option value="Feminine">Feminine</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="panel-footer">
+                    <button id="btnSave" name="btnSave" class="btn btn-success" data-submit="true" type="button"><span class="glyphicon glyphicon-ok"></span>&nbsp;Save</button>&nbsp;&nbsp;
+                    <button id="btnCancel" name="btnCancel" class="btn btn-warning" type="button"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <br/>
+
+    <div class="row" id="progressBar">
+        <div class="col-md-12">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
     </div>
-</div>
+
+    <table id="studentsGrid" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="colsort" onclick="sortDataBy(this, 'name');">Name <span class="glyphicon glyphicon-sort"></span></th>
+                <th class="colsort" onclick="sortDataBy(this, 'type');">Student Type <span class="glyphicon glyphicon-sort"></span></th>
+                <th class="colsort" onclick="sortDataBy(this, 'gender');">Gender <span class="glyphicon glyphicon-sort"></span></th>
+                <th class="colsort" onclick="sortDataBy(this, 'updated_on');">Updated on Date <span id="defaultSort" class="glyphicon glyphicon-sort-by-attributes"></span></th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <ul class="pager">
+        <li><a href="javascript:void(0)" onclick="goToStart();"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
+        <li><a href="javascript:void(0)" onclick="goToPrevious();"><span class="glyphicon glyphicon-backward"></span></a></li>
+        <li>You are on Page <span id="CurrentPage"></span></li>
+        <li><a href="javascript:void(0)" onclick="goToNext();"><span class="glyphicon glyphicon-forward"></span></a></li>
+        <li><a href="javascript:void(0)" onclick="goToEnd();"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+    </ul>
+
+</form>
+
+<script id="tmpListOfStudents" type="x-tmpl-mustache">
+    {{#.}}
+    <tr><td>{{Name}}</td><td>{{Type}}</td><td>{{Gender}}</td><td><nobr>{{UpdatedOn}}</nobr></td>
+        <td>
+            <button type="button" class="btn btn-primary btn-xs" onclick="editStudent({{Id}},'{{Name}}','{{Type}}','{{Gender}}',{{Enabled}});"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-warning btn-xs btn-hide" onclick="hideStudent({{Id}});"><span class="glyphicon glyphicon-eye-close"></span>&nbsp;Hide</button>
+            <button type="button" class="btn btn-danger btn-xs" onclick="delStudent({{Id}});"><span class="glyphicon glyphicon-remove"></span>&nbsp;Delete</button>
+        </td>
+    </tr>
+    {{/.}}
+</script>
+
+<script id="tmpMsg" type="x-tmpl-mustache">
+    <div class="alert alert-{{Type}} alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <strong>{{Title}}</strong>&nbsp;&nbsp;<span>{{Msg}}</span>
+    </div>
+</script>
+
+<script>
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname;
+    if (getUrl.host.indexOf("localhost") !== -1)
+        baseUrl = getUrl.protocol + "//" + getUrl.host;
+    var urlAPI = baseUrl + "/api/StudentsService/";
+    var pageNumber = 1;
+    var pageSize = 10;
+    var totalPages = 0;
+    var total = 0;
+    var studentsDataSet;
+    var progress;
+    var currentSort = "updated_on";
+    var direction = "DESC";
+    var selectedId = -1;
+
+    function goToStart() {
+        pageNumber = 1;
+        loadStudents();
+    }
+
+    function goToPrevious() {
+        pageNumber--;
+        if (pageNumber <= 0)
+            pageNumber = totalPages;
+        loadStudents();
+    }
+
+    function goToNext() {
+        pageNumber++;
+        if (pageNumber > totalPages)
+            pageNumber = 1;
+        loadStudents();
+    }
+
+    function goToEnd() {
+        pageNumber = totalPages;
+        loadStudents();
+    }
+
+    function showStudentsGrid() {
+        $("#CurrentPage").html(pageNumber + " of " + totalPages);
+
+        var template = $('#tmpListOfStudents').html();
+        Mustache.parse(template);
+        var rendered = Mustache.render(template, studentsDataSet);
+
+        $("#progressBar").hide();
+        clearInterval(progress);
+
+        $('#studentsGrid').show();
+        $('.pager').show();
+
+        $('#studentsGrid > tbody').html(rendered);
+    }
+
+    function alertUser(type, msg) {
+        var message = [];
+        if (type == 'e') {
+            message.Title = 'Error!';
+            message.Type = 'danger';
+            message.Msg = msg;
+        }
+
+        if (type == 's') {
+            message.Title = 'Success!';
+            message.Type = 'success';
+            message.Msg = msg;
+        }
+
+        if (type == 'w') {
+            message.Title = 'Warning!';
+            message.Type = 'warning';
+            message.Msg = msg;
+        }
+
+        var template = $('#tmpMsg').html();
+        Mustache.parse(template);
+        var rendered = Mustache.render(template, message);
+        $('#alertPanel').html(rendered);
+    }
+
+    function sortDataBy(obj, sortField) {
+        console.log($(obj));
+        console.log($(obj).find("span:first-child"));
+        console.log($(obj).find("span:first-child").hasClass("glyphicon-sort"));
+        if ($(obj).find("span:first-child").hasClass("glyphicon-sort")) {
+            $(obj).find("span:first-child").removeClass("glyphicon-sort").addClass("glyphicon-sort-by-attributes");
+            currentSort = sortField;
+            direction = "ASC";
+        }
+        else {
+            if ($(obj).find("span:first-child").hasClass("glyphicon-sort-by-attributes")) {
+                $(obj).find("span:first-child").removeClass("glyphicon-sort-by-attributes").addClass("glyphicon-sort-by-attributes-alt");
+                currentSort = sortField;
+                direction = "DESC";
+            }
+            else {
+                if ($(obj).find("span:first-child").hasClass("glyphicon-sort-by-attributes-alt")) {
+                    $(obj).find("span:first-child").removeClass("glyphicon-sort-by-attributes-alt").addClass("glyphicon-sort");
+                    currentSort = "updated_on";
+                    direction = "DESC";
+                }
+            }
+        }
+
+        $(obj).siblings().find("span").removeClass().addClass("glyphicon glyphicon-sort");
+        console.log(currentSort);
+
+        loadStudents();
+    }
+
+    function resetSearchForm() {
+        $('#alertPanel').empty();
+        $("#progressBar").hide();
+        var now = moment(new Date());
+        $('#StartDate').data("DateTimePicker").date(now.subtract(1, 'year').hours(0).minutes(0).seconds(0).milliseconds(0));
+        $('#EndDate').data("DateTimePicker").date(now.add(1, 'year').hours(0).minutes(0).seconds(0).milliseconds(0));
+        $("#Type").val("").trigger('change');
+        $("#Gender").val("").trigger('change');
+        pageNumber = 1;
+        $("#IsNotEnabled").prop('checked', false);
+        $("#Name").val("");
+        currentSort = "updated_on";
+        direction = "DESC";
+        $("#studentsGrid").find("span").removeClass();
+        $("#studentsGrid").find("span").addClass("glyphicon glyphicon-sort");
+        $("#defaultSort").removeClass("glyphicon-sort").addClass("glyphicon-sort-by-attributes");
+    }
+
+    $("#btnReset").click(function () {
+        resetSearchForm();
+        $('#btnSearch').prop("disabled", true);
+        $('#btnReset').prop("disabled", true);
+        loadStudents();
+    });
+
+    $("#btnSearch").click(function () {
+        $('#alertPanel').empty();
+        $('#btnSearch').prop("disabled", true);
+        $('#btnReset').prop("disabled", true);
+        pageNumber = 1;
+        loadStudents();
+    });
+
+    function loading() {
+        $("#progressBar").show();
+        var progressBar = $('.progress-bar');
+        var percentVal = 0;
+
+        progress = window.setInterval(function () {
+            progressBar.css("width", percentVal + '%').attr("aria-valuenow", percentVal + '%');
+
+            if (percentVal == 100) {
+                percentVal = 0;
+            }
+            percentVal += 10;
+        }, 500);
+    }
+
+    function loadStudents() {
+        $('#studentsGrid > tbody').html("");
+        $('#studentsGrid').hide();
+        $('.pager').hide();
+        loading();
+
+        var startDate = moment($("#StartDate").datetimepicker('date')).format('YYYY-MM-DDTHH:mm:ss');
+        var endDate = moment($("#EndDate").datetimepicker('date')).format('YYYY-MM-DDTHH:mm:ss');
+        var name = $("#Name").val();
+        var isEnabled = !$("#IsNotEnabled").is(":checked");
+        var type = $("#Type").val();
+        var gender = $("#Gender").val();
+        var filter = "?startDate=" + startDate + "&endDate=" + endDate + "&name=" + name + "&isEnabled=" + isEnabled + "&gender=" + gender + "&type=" + type + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize + "&sortBy=" + currentSort + "&sortDirection=" + direction;
+
+        $.ajax({
+            url: urlAPI + "GetPaginatedList" + filter, success: function (result) {
+                total = result.TotalStudents;
+                if (total > 0) {
+                    totalPages = Math.floor(total / pageSize);
+                    if (total % pageSize > 0) totalPages++;
+                    studentsDataSet = result.Students;
+                    showStudentsGrid();
+                    if (!isEnabled) {
+                        $('.btn-hide').hide();
+                    }
+                } else {
+                    $("#progressBar").hide();
+                    clearInterval(progress);
+
+                    alertUser('w', 'No data was found to show clear the filters or try again later.');
+                }
+
+                $('#btnSearch').prop("disabled", false);
+                $('#btnReset').prop("disabled", false);
+                $('#btnSave').prop("disabled", false);
+                $('#btnCancel').prop("disabled", false);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#progressBar").hide();
+        $('#studentsGrid').hide();
+        $('.pager').hide();
+        $("#Type").select2();
+        $("#Gender").select2();
+
+        var now = moment(new Date());
+
+        $('#StartDate').datetimepicker({
+            format: 'MM/DD/YYYY',
+        });
+
+        $('#EndDate').datetimepicker({
+            format: 'MM/DD/YYYY',
+        });
+
+        $('#StartDate').data("DateTimePicker").date(now.subtract(1, 'year').hours(0).minutes(0).seconds(0).milliseconds(0));
+        $('#EndDate').data("DateTimePicker").date(now.add(1, 'year').hours(0).minutes(0).seconds(0).milliseconds(0));
+        $("#StartDate").on("dp.change", function (e) {
+            $('#EndDate').data("DateTimePicker").minDate(e.date);
+        });
+        $("#EndDate").on("dp.change", function (e) {
+            $('#StartDate').data("DateTimePicker").maxDate(e.date);
+        });
+
+        loading();
+                
+        resetSearchForm();
+        $("#progressBar").hide();
+        clearInterval(progress);
+        loadStudents();
+    });
+
+    function resetForm() {
+        $('#collapseFilters').collapse('show');
+        $('#studentForm').collapse('hide');
+
+        $(window).scrollTop(0);
+        $("#progressBar").hide();
+        $("#selType").val("").trigger('change');
+        $("#selGender").val("").trigger('change');
+        $("#chkIsNotEnabled").prop('checked', false);
+        $('#divChkEnabled').addClass('hidden');
+        $("#txtName").val("");
+        if (selectedId != -1) {
+            $("#lblTitleForm").text('Add New');
+            $("#iconTitleForm").removeClass('glyphicon-pencil').addClass('glyphicon-plus');
+        } 
+        selectedId = -1;
+    }
+
+    $("#btnCancel").click(function () {
+        resetForm();
+    });
+
+    $("#btnSave").click(function () {
+        $('#alertPanel').empty();
+        $('#btnSave').prop("disabled", true);
+        $('#btnCancel').prop("disabled", true);
+
+        var name = $("#txtName").val();
+        var isEnabled = !$("#chkIsNotEnabled").is(":checked");
+        var type = $("#selType").val();
+        var gender = $("#selGender").val();
+        var student = { 'Id': selectedId, 'Name': name, 'Enabled': isEnabled, 'Type': type, 'Gender': gender };
+        
+        var functionName = "AddNew";
+        if (selectedId != -1) {
+            functionName = "Update";
+        }
+
+        $.ajax({
+            url: urlAPI + functionName,
+            data: student,
+            method: "POST",
+            success: function (response) {
+                if (!response.HasError) {
+                    alertUser("s", "The Student was successfully saved.");
+                    resetForm();
+                    pageNumber = 1;
+                    loadStudents();
+                } else {
+                    alertUser("e", "The Student was unable to be saved, please try again later.");
+                    $('#btnSave').prop("disabled", false);
+                    $('#btnCancel').prop("disabled", false);
+                }
+            }
+        });
+    });
+
+    function editStudent(id, name, type, gender, isEnabled) {
+        $('#collapseFilters').collapse('hide');
+        $('#studentForm').collapse('show');
+        
+        $('#divChkEnabled').removeClass('hidden');
+        $("#selType").val(type).trigger('change');
+        $("#selGender").val(gender).trigger('change');
+        selectedId = id;
+        $("#chkIsNotEnabled").prop('checked', !isEnabled);
+        $("#txtName").val(name);
+        $("#lblTitleForm").text('Edit');
+        $("#iconTitleForm").removeClass('glyphicon-plus').addClass('glyphicon-pencil');
+    }
+
+    function delStudent(id) {
+        if (confirm("Are you sure to delete this student? All the data will be erased, you can hide it instead.")) {
+            $.ajax({
+                url: urlAPI + "Delete/" + id,
+                success: function (msg) {
+                    if (!msg.HasError) {
+                        alertUser("s", "The student was successfully deleted.");
+                        pageNumber = 1;
+                        loadStudents();
+                    } else {
+                        alertUser("e", "We were unable to delete the student.");
+                    }
+                }
+            });
+        }
+    }
+
+    function hideStudent(id) {
+        $.ajax({
+            url: urlAPI + "Hide/" + id,
+            success: function (msg) {
+                if (!msg.HasError) {
+                    alertUser("s", "The student was successfully hidden.");
+                    pageNumber = 1;
+                    loadStudents();
+                } else {
+                    alertUser("e", "We were unable to delete the student.");
+                }
+            }
+        });
+    }
+</script>

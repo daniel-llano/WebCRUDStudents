@@ -23,9 +23,21 @@ namespace WebCRUDStudents
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/myjslibs").Include(
+                      "~/Scripts/mustache.js",
+                      "~/Scripts/select2.js",
+                      "~/Scripts/moment.js",
+                      "~/Scripts/bootstrap-datetimepicker.js",
+                      "~/Scripts/validator.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/select2.css",
+                      "~/Content/select2-bootstrap.css",
+                      "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/site.css",
+                      "~/Content/custom.css"
+                      ));
         }
     }
 }

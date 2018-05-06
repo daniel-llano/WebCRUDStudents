@@ -15,6 +15,7 @@ namespace DAL
         public StudentType Type { get; set; }
         public bool Enabled { get; set; }
         public DateTime UpdatedOn { get; set; }
+        public Student() { }
         public Student(object[] values)
         {
             Id = Convert.ToInt32(values[0]);

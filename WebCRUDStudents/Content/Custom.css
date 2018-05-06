@@ -1,0 +1,31 @@
+﻿.checkbox label {
+    display: block;
+    float: left;
+    padding-left: 30px;
+    line-height: 14px;
+}
+
+.checkbox input {
+    vertical-align: top;
+}
+
+.checkbox label span {
+    vertical-align: middle;
+}
+
+.panel-heading {
+    cursor: pointer;
+}
+
+table th {
+    width: auto !important;
+}
+
+.error {
+    color: #d9534f;
+    font-size: 12px;
+}
+
+.colsort:hover {
+    cursor: pointer;
+}
