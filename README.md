@@ -40,25 +40,39 @@ Verify that your SQL Server is well configured to accept remote connections from
 
 1. WebCRUDStudents (ASP.NET, Web API application client, it has the standard structure of an empty project of this type created with the Visual Studio wizard, in the following comments will be included only the updated/added source files) 
 	* App_Start, folder that contains: 
-		** BundleConfig.cs, were a new bundle was created to include the libraries used in the view with the students CRUD, which are mustache.js for the templates parsing and rendering on client side, select2.js for the custom combo box for the form, moment.js used by date time picker, bootstrap-datetimepicker.js the date time picker used in the filter by dates part of the search form, and validator.js a custom made validator JavaScript set of methods which support Bootstrap. Their corresponding CSS files for the plugins which need them were include on the Style Bundle. All this files are inside Scripts folder and Content folder. 
-		** WebApiConfig.cs, added JSON formatter, since from the Web API all the responses are generated using JSON. 
+	
+		* BundleConfig.cs, were a new bundle was created to include the libraries used in the view with the students CRUD, which are mustache.js for the templates parsing and rendering on client side, select2.js for the custom combo box for the form, moment.js used by date time picker, bootstrap-datetimepicker.js the date time picker used in the filter by dates part of the search form, and validator.js a custom made validator JavaScript set of methods which support Bootstrap. Their corresponding CSS files for the plugins which need them were include on the Style Bundle. All this files are inside Scripts folder and Content folder.
+		
+		* WebApiConfig.cs, added JSON formatter, since from the Web API all the responses are generated using JSON. 
 	* Content, in this folder were added all the styles used by the JavaScript’s widgets used on the UI which are: bootstrap-datetimepicker.css, select2-bootstrap.css and select2.css
 	* Scripts, in this folder were added all the JavaScript’s files that necessary for the UI side widgets and logic, which include:
-		** Home, this folder contain the studentsLogic.js file which olds all the logic for the students CRUD page, this logic contains the calls to the Web API services and the CRUD operations call too. 
-		** bootstrap-datetimepicker.js, widget to show the data time pickers to the user. 
-		** select2.js, widget to show the combo boxes to the user, is a replacement for common HTML select boxes, which supports some nice feature like searching, tagging, remote data sets, infinite scrolling, and many other highly used options. 
-		** moment.js, library to parse, validate, manipulate, and display dates and times in JavaScript.
-		** mustache.js, is an implementation of the mustache template system in JavaScript.
-		** validator.js, custom-made library to added easy to use data validator for bootstrap forms. 
+	
+		* Home, this folder contain the studentsLogic.js file which olds all the logic for the students CRUD page, this logic contains the calls to the Web API services and the CRUD operations call too.
+		
+		* bootstrap-datetimepicker.js, widget to show the data time pickers to the user. 
+		
+		* select2.js, widget to show the combo boxes to the user, is a replacement for common HTML select boxes, which supports some nice feature like searching, tagging, remote data sets, infinite scrolling, and many other highly used options.
+		
+		* moment.js, library to parse, validate, manipulate, and display dates and times in JavaScript.
+		
+		* mustache.js, is an implementation of the mustache template system in JavaScript.
+		
+		* validator.js, custom-made library to added easy to use data validator for bootstrap forms. 
 	* Controllers, folder that contains the MVC controller and the API controller:
-		** HomeController.cs, MVC Controller that was created by default and presents the first page or default page to the users, the students CRUD was created in the Index view served by this controller. 
-		** StudentsServiceController.cs, Web API Controller, which has all the necessary methods that can be consumed by the client side AJAX, calls from JavaScript logic. It contains methods with self-descriptive names for perform all CRUD operations. 
+	
+		* HomeController.cs, MVC Controller that was created by default and presents the first page or default page to the users, the students CRUD was created in the Index view served by this controller. 
+		
+		* StudentsServiceController.cs, Web API Controller, which has all the necessary methods that can be consumed by the client side AJAX, calls from JavaScript logic. It contains methods with self-descriptive names for perform all CRUD operations. 
 	* Models, folder that contains the classes used in the responses to the client side calls, it contains the following classes: 
-		** OperationResponse.cs, class that represents a response for the insert, update, hide, delete calls. This response allows client side to detect if any error has occurred and the message of the error. 
-		** StudentsResponse.cs, class that hold the fields that are necessary for the search/list of students on client side. This class contains fields to know the total numbers of students for a given call, also the total number of pages, taking by default 10 elements for page, and the list of students to show. 
-	* Views, folder that contains all the cshtml files which at the end represents the actual page served to the user. 
-		** Home, folder that contains all the view for the HomeController, just the index view was modified, was removed all the default elements, and was replaced by the Add/Update form, the filter form, a couple of mustache templates in order to show the paginated table/grid of students.
-		** Shared, folder that contains the layout used to show the views, was updated the file _Layout.cshtml in order to include jQuery before include the student’s logic JavaScript file which uses this library, and to include the custom bundle with the widgets and libraries used.  
+	
+		* OperationResponse.cs, class that represents a response for the insert, update, hide, delete calls. This response allows client side to detect if any error has occurred and the message of the error. 
+		
+		* StudentsResponse.cs, class that hold the fields that are necessary for the search/list of students on client side. This class contains fields to know the total numbers of students for a given call, also the total number of pages, taking by default 10 elements for page, and the list of students to show. 
+	* Views, folder that contains all the cshtml files which at the end represents the actual page served to the user.
+	
+		* Home, folder that contains all the view for the HomeController, just the index view was modified, was removed all the default elements, and was replaced by the Add/Update form, the filter form, a couple of mustache templates in order to show the paginated table/grid of students.
+		
+		* Shared, folder that contains the layout used to show the views, was updated the file _Layout.cshtml in order to include jQuery before include the student’s logic JavaScript file which uses this library, and to include the custom bundle with the widgets and libraries used.  
 	* Global.asax, is an optional file which is used to handling higher level application events such as Application_Start, Application_End, Session_Start, Session_End etc. In this case was used the Application_Start event to set the connection string read from Web.config file and include the JSON formatter. 
 	* Web.config, is the main settings and configuration file for web application. Here is where was added the connection string and this needs to be change to point to the right SQL Server instance. 
 	
@@ -75,8 +89,8 @@ This project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 
 * DAL Student and StudentMapper classes were done based on the [Data Mapper described by Martin Fowler](https://martinfowler.com/eaaCatalog/dataMapper.html)
 * Singletons were implemented in base of what is described in the web article [Implementing the Singleton Pattern in C#](http://csharpindepth.com/Articles/General/Singleton.aspx)
 * UI was build using the following JavaScript libraries/widgets: 
-	** [moment](https://momentjs.com/)
-	** [bootstrap-datetimepicker](http://eonasdan.github.io/bootstrap-datetimepicker/)
-	** [select2](https://select2.org/)
-	** [mustache.js](https://github.com/janl/mustache.js/)
+	* [moment](https://momentjs.com/)
+	* [bootstrap-datetimepicker](http://eonasdan.github.io/bootstrap-datetimepicker/)
+	* [select2](https://select2.org/)
+	* [mustache.js](https://github.com/janl/mustache.js/)
 
