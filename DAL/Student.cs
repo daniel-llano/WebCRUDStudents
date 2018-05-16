@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -21,7 +17,7 @@ namespace DAL
             Id = Convert.ToInt32(values[0]);
             Name = values[1].ToString();
             Type = (StudentType)Enum.Parse(typeof(StudentType), values[2].ToString());
-            Gender = values[3].ToString() == "M" ? "Masculine" : "Feminine";
+            Gender = values[3].ToString() == "M" ? "Male" : "Female";
             Enabled = Convert.ToBoolean(values[4]);
             UpdatedOn = Convert.ToDateTime(values[5]);
         }
@@ -29,6 +25,11 @@ namespace DAL
             Name = name;
             Gender = gender;
             Type = type;
+        }
+
+        public override string ToString()
+        {
+            return Type.ToString() + "," + Name + "," + Gender[0] + "," + UpdatedOn.ToString("yyyyMMddHHmmss");
         }
     }
 }

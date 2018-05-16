@@ -73,53 +73,73 @@ CREATE PROC [dbo].[addStudent]
 	@type varchar(10) = null,
 	@gender char(1) = null
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
  
-    BEGIN TRAN 
+	BEGIN TRAN 
  
-    INSERT INTO [dbo].[student] ([name],[type],[gender],[enabled],[updated_on]) 
-    SELECT @name, @type, @gender, 1, GETDATE()  
+	INSERT INTO [dbo].[student] ([name],[type],[gender],[enabled],[updated_on]) 
+	SELECT @name, @type, @gender, 1, GETDATE()  
  
-    COMMIT 
+	COMMIT 
 
-    RETURN SCOPE_IDENTITY() 
+	RETURN SCOPE_IDENTITY() 
+GO
+
+CREATE PROC [dbo].[addFullStudent]  
+	@name varchar(500) = null,
+	@type varchar(10) = null,
+	@gender char(1) = null,
+	@enabled bit = null,
+	@updated_on datetime = null
+AS  
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
+ 
+	BEGIN TRAN 
+ 
+	INSERT INTO [dbo].[student] ([name],[type],[gender],[enabled],[updated_on]) 
+	SELECT @name, @type, @gender, @enabled, @updated_on 
+ 
+	COMMIT 
+
+	RETURN SCOPE_IDENTITY() 
 GO
 
 
 CREATE PROC [dbo].[delStudent]  
-    @id bigint 
+	@id bigint 
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
  
-    BEGIN TRAN 
+	BEGIN TRAN 
  
-    DELETE 
-    FROM   [student] 
-    WHERE  [id] = @id 
+	DELETE 
+	FROM   [student] 
+	WHERE  [id] = @id 
  
-    COMMIT 
+	COMMIT 
 GO
 
 
 CREATE PROC [dbo].[hideStudent]  
 	@id bigint
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
  
-    BEGIN TRAN 
+	BEGIN TRAN 
  
-    UPDATE [student] 
-    SET    [enabled] = 0, [updated_on] = GETDATE() 
-    WHERE  [id] = @id 
+	UPDATE [student] 
+	SET    [enabled] = 0, [updated_on] = GETDATE() 
+	WHERE  [id] = @id 
  
-    COMMIT TRAN 
+	COMMIT TRAN 
 
-    SELECT [id],[name],[type],[gender],[enabled],[updated_on] 
-    FROM   [student] 
-    WHERE  [id] = @id 
+	SELECT [id],[name],[type],[gender],[enabled],[updated_on] 
+	FROM   [student] 
+	WHERE  [id] = @id 
 GO 
 
 
@@ -130,36 +150,36 @@ CREATE PROC [dbo].[updStudent]
 	@gender char(1) = null,
 	@enabled bit = null
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
  
-    BEGIN TRAN 
+	BEGIN TRAN 
  
-    UPDATE [student] 
-    SET  [name] = @name,[type]=@type,[gender]=@gender,[enabled]=@enabled,[updated_on]=GETDATE() 
-    WHERE  [id] = @id 
+	UPDATE [student] 
+	SET  [name] = @name,[type]=@type,[gender]=@gender,[enabled]=@enabled,[updated_on]=GETDATE() 
+	WHERE  [id] = @id 
  
-    COMMIT TRAN 
+	COMMIT TRAN 
 
 	SELECT [id],[name],[type],[gender],[enabled],[updated_on] 
-    FROM   [student] 
-    WHERE  [id] = @id 
+	FROM   [student] 
+	WHERE  [id] = @id 
 GO
 
 
 CREATE PROC [dbo].[selStudentById]
 	@id bigint  
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
  
-    BEGIN TRAN 
+	BEGIN TRAN 
  
-    SELECT [id],[name],[type],[gender],[enabled],[updated_on]  
-    FROM   [student]
-    WHERE  [id] = @id 
+	SELECT [id],[name],[type],[gender],[enabled],[updated_on]  
+	FROM   [student]
+	WHERE  [id] = @id 
   
-    COMMIT 
+	COMMIT 
 GO
 
 
@@ -173,12 +193,12 @@ CREATE PROC [dbo].[selPaginatedStudentsWhere]
 	@sort varchar(4),
 	@enabled bit
 AS  
-    SET NOCOUNT ON  
-    SET XACT_ABORT ON   
+	SET NOCOUNT ON  
+	SET XACT_ABORT ON   
 
-    DECLARE @SQLStatement nvarchar(max)
+	DECLARE @SQLStatement nvarchar(max)
 	DECLARE @outPut NVARCHAR(50)
-    
+	
 	SET @OFFSET = (@OFFSET - 1) * @LIMIT;
 
 	IF @cond <> '' 

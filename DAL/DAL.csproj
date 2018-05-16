@@ -48,9 +48,10 @@
     <Compile Include="SQLServerConnection.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="StudentMapper.cs" />
+    <Compile Include="StudentsComparer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DBScrip.sql" />
+    <Content Include="DBScript.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -290,6 +288,8 @@ namespace DAL
                     return SqlDbType.VarChar;
                 case TypeOfValue.TEXT:
                     return SqlDbType.Text;
+                case TypeOfValue.CHAR:
+                    return SqlDbType.Char;
                 default:
                     return SqlDbType.VarChar;
             }

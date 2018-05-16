@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -14,9 +12,26 @@ namespace DAL
             DBConnection.CreateConnection(DBType.SQLServer);
             DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
             DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
-            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Masculine" ? "M" : "F");
+            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
             DBParameter[] pars = new DBParameter[] { name, type, gender };
             long id = DBConnection.TheConnection.ExecStoredProcAdd("addStudent", pars);
+            if (id == -1)
+                res = false;
+            else
+                student.Id = id;
+            return res;
+        }
+        public static bool InsertFull(Student student)
+        {
+            bool res = true;
+            DBConnection.CreateConnection(DBType.SQLServer);
+            DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
+            DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
+            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
+            DBParameter enabled = new DBParameter("enabled", TypeOfValue.BOOLEAN, student.Enabled);
+            DBParameter updated_on = new DBParameter("updated_on", TypeOfValue.DATETIME, student.UpdatedOn);
+            DBParameter[] pars = new DBParameter[] { name, type, gender, enabled, updated_on };
+            long id = DBConnection.TheConnection.ExecStoredProcAdd("addFullStudent", pars);
             if (id == -1)
                 res = false;
             else
@@ -30,7 +45,7 @@ namespace DAL
             DBParameter id = new DBParameter("id", TypeOfValue.INTEGER, student.Id);
             DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
             DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
-            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Masculine" ? "M" : "F");
+            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
             DBParameter enabled = new DBParameter("enabled", TypeOfValue.BOOLEAN, student.Enabled);
             DBParameter[] pars = new DBParameter[] { id, name, type, gender, enabled };
             res = DBConnection.TheConnection.ExecStoredProc("updStudent", pars);
@@ -88,6 +103,51 @@ namespace DAL
             totalItems = Convert.ToInt64(count.Value);
             totalPages = Convert.ToInt64(pags.Value);
             return res;
+        }
+
+        public static List<Student> GetAllWhere(string filteredBy, string sortByField = "updated_on", string sortDirection = "DESC", bool isEnabled = true, params DBParameter[] parameters)
+        {
+            List<Student> res = null;
+            DBConnection.CreateConnection(DBType.SQLServer);
+
+            if (!string.IsNullOrEmpty(filteredBy))
+            {
+                filteredBy = " and " + filteredBy;
+            } else
+                filteredBy = string.Empty;
+
+
+            string sqlStatement = @"select 
+                    [id],[name],[type],[gender],[enabled],[updated_on]
+                from [student] where [enabled] = @enabled " + filteredBy +
+                @" order by " + sortByField + " " + sortDirection;
+            
+            DBParameter enabled = new DBParameter("enabled", TypeOfValue.BOOLEAN, isEnabled);
+            DBParameter[] pars = new DBParameter[] { enabled };
+            List<object[]> lista = DBConnection.TheConnection.ExecQuery(sqlStatement, pars.Concat(parameters).ToArray());
+            if (lista != null && lista.Count > 0)
+            {
+                res = new List<Student>();
+                foreach (object[] fila in lista)
+                    res.Add(new Student(fila));
+            }
+            return res;
+        }
+
+        public static bool Exists(Student student) {
+            bool exists = false;
+            
+            DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
+            DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
+            DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
+            DBParameter updated_on = new DBParameter("updated_on", TypeOfValue.DATETIME, student.UpdatedOn);
+            DBParameter[] pars = new DBParameter[] { name, type, gender, updated_on };
+
+            var result = StudentMapper.GetAllWhere(" type = @type and name = @name and gender = @gender and convert(datetime, convert(char(19), updated_on, 126)) = @updated_on ", "updated_on", "desc", true, pars);
+
+            exists = (result != null && result.Count > 0);
+
+            return exists;
         }
     }
 }

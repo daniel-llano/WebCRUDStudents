@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DAL;
 
 namespace TestDAL
@@ -12,7 +11,7 @@ namespace TestDAL
         {
             DBConnection.ConnectionString = "Server=(local)\\sqlexpress;Database=Students;Trusted_Connection=True;";
 
-            var newStudent = new Student("Superman", "Masculine", StudentType.High);
+            var newStudent = new Student("Superman", "Male", StudentType.High);
             var result = StudentMapper.Insert(newStudent);
             Assert.AreEqual(true, result);
 
