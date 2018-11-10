@@ -7,17 +7,21 @@ namespace DAL
     {
         public static IDBConnection TheConnection;
         public static string ConnectionString = string.Empty;
+        public static DBType Type = DBType.MySQL;
 
         private DBConnection() { }
 
-        public static void CreateConnection(DBType type) {
+        public static void CreateConnection() {
             if (string.IsNullOrEmpty(ConnectionString)) {
                 throw new Exception("You must provide a connection string in order to use a database.");
             }
 
-            switch (type) {
+            switch (Type) {
                 case DBType.SQLServer:
                     TheConnection = new SQLServerConnection();
+                    break;
+                case DBType.MySQL:
+                    TheConnection = new MySQLConnection();
                     break;
             }
 

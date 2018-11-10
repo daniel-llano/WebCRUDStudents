@@ -9,7 +9,7 @@ namespace DAL
         public static bool Insert(Student student)
         {
             bool res = true;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
             DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
             DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
@@ -24,7 +24,7 @@ namespace DAL
         public static bool InsertFull(Student student)
         {
             bool res = true;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
             DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
             DBParameter gender = new DBParameter("gender", TypeOfValue.CHAR, student.Gender == "Male" ? "M" : "F");
@@ -41,7 +41,7 @@ namespace DAL
         public static bool Update(Student student)
         {
             bool res = true;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter id = new DBParameter("id", TypeOfValue.INTEGER, student.Id);
             DBParameter name = new DBParameter("name", TypeOfValue.STRING, student.Name);
             DBParameter type = new DBParameter("type", TypeOfValue.STRING, student.Type.ToString());
@@ -54,7 +54,7 @@ namespace DAL
         public static bool Hide(long id)
         {
             bool res = true;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter pid = new DBParameter("id", TypeOfValue.INTEGER, id);
             DBParameter[] pars = new DBParameter[] { pid };
             res = DBConnection.TheConnection.ExecStoredProc("hideStudent", pars);
@@ -63,7 +63,7 @@ namespace DAL
         public static bool Delete(long id)
         {
             bool res = true;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter pid = new DBParameter("id", TypeOfValue.INTEGER, id);
             DBParameter[] pars = new DBParameter[] { pid };
             res = DBConnection.TheConnection.ExecStoredProc("delStudent", pars);
@@ -72,7 +72,7 @@ namespace DAL
         public static Student GetById(long id)
         {
             Student res = null;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter pid = new DBParameter("id", TypeOfValue.INTEGER, id);
             DBParameter[] pars = new DBParameter[] { pid };
             IList<object[]> list = DBConnection.TheConnection.ExecStoredProcQuery("selStudentById", pars);
@@ -83,7 +83,7 @@ namespace DAL
         public static List<Student> GetAllPaginatedWhere(long currentPage, long itemsPerPage, out long totalItems, out long totalPages, string filteredBy, string sortByField = "updated_on", string sortDirection = "DESC", bool isEnabled = true, params DBParameter[] parameters)
         {
             List<Student> res = null;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
             DBParameter offset = new DBParameter("OFFSET", TypeOfValue.INTEGER, currentPage);
             DBParameter limit = new DBParameter("LIMIT", TypeOfValue.INTEGER, itemsPerPage);
             DBParameter count = new DBParameter("COUNT", TypeOfValue.INTEGER, 0, ParameterType.OUT);
@@ -108,7 +108,7 @@ namespace DAL
         public static List<Student> GetAllWhere(string filteredBy, string sortByField = "updated_on", string sortDirection = "DESC", bool isEnabled = true, params DBParameter[] parameters)
         {
             List<Student> res = null;
-            DBConnection.CreateConnection(DBType.SQLServer);
+            DBConnection.CreateConnection();
 
             if (!string.IsNullOrEmpty(filteredBy))
             {

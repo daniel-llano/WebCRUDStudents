@@ -1,4 +1,5 @@
 ﻿using DAL;
+using System;
 using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -16,7 +17,13 @@ namespace WebCRUDStudents
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            DBConnection.ConnectionString = WebConfigurationManager.ConnectionStrings["SqlServer"].ConnectionString;
+            
+            DBType typeOfDB = DBType.MySQL;
+            var stringTypeOfDB = WebConfigurationManager.AppSettings["DBType"];
+            if (Enum.TryParse(stringTypeOfDB, out typeOfDB)) {
+                DBConnection.Type = typeOfDB;
+                DBConnection.ConnectionString = WebConfigurationManager.ConnectionStrings[stringTypeOfDB].ConnectionString;
+            }
 
             HttpConfiguration config = GlobalConfiguration.Configuration;
             config.Formatters.JsonFormatter.SerializerSettings.Formatting =

@@ -19,7 +19,8 @@ namespace WebCRUDStudents.Controllers
                 string filter = string.Empty;
                 string joinOperator = string.Empty;
 
-                filter = " convert(date, updated_on) between '" + startDate.ToString("yyyyMMdd") + "' and '" + endDate.ToString("yyyyMMdd") + "' ";
+                //filter = " convert(date, updated_on) between '" + startDate.ToString("yyyyMMdd") + "' and '" + endDate.ToString("yyyyMMdd") + "' ";
+                filter = " updated_on >= '" + startDate.ToString("yyyy-MM-dd") + "' and updated_on <= '" + endDate.ToString("yyyy-MM-dd") + "' + INTERVAL 1 DAY ";
 
                 if (!string.IsNullOrEmpty(name)) {
                     filter += " and name like '%" + name + "%'";

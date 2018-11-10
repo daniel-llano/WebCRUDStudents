@@ -9,7 +9,10 @@ namespace TestDAL
         [TestMethod]
         public void TestCreateUpdateDeleteStudents()
         {
-            DBConnection.ConnectionString = "Server=(local)\\sqlexpress;Database=Students;Trusted_Connection=True;";
+            //DBConnection.ConnectionString = "Server=(local)\\sqlexpress;Database=Students;Trusted_Connection=True;";
+            //DBConnection.Type = DBType.SQLServer;
+            DBConnection.Type = DBType.MySQL;
+            DBConnection.ConnectionString = "Server=localhost;Port=3306;Uid=root;Pwd=system32;Database=Students;CheckParameters=false;";
 
             var newStudent = new Student("Superman", "Male", StudentType.High);
             var result = StudentMapper.Insert(newStudent);
@@ -34,7 +37,8 @@ namespace TestDAL
 
         [TestMethod]
         public void TestReadStudents() {
-            DBConnection.ConnectionString = "Server=(local)\\sqlexpress;Database=Students;Trusted_Connection=True;";
+            DBConnection.Type = DBType.MySQL;
+            DBConnection.ConnectionString = "Server=localhost;Port=3306;Uid=root;Pwd=system32;Database=Students;CheckParameters=false;";
 
             long total = 0;
             long pages = 0;
